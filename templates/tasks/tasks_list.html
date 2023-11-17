@@ -1,0 +1,16 @@
+{% extends "global/base.html" %}
+{% load static %}
+
+{% block title %}Listagem de Tarefas{% endblock title %}
+{% block css %}<link rel="stylesheet" href="{% static 'tasks/css/tasks_list.css' %}">{% endblock css %}
+
+{% block content %}
+    <h1>Listagem de Tarefas</h1>
+    <hr>
+
+    <ul>
+    {% for task in tasks %}
+        <li>{{ task.title }} - {{ task.category }}</li>
+    {% endfor %}
+    </ul>
+{% endblock content %}

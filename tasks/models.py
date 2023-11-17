@@ -7,11 +7,15 @@ class Category(models.Model):
     color = models.CharField(max_length=7, default="#FFFFFF")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="categories")
 
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+
     def __str__(self):
         return self.name
 
 
-class Tasks(models.Model):
+class Task(models.Model):
     PRIORITY_CHOICES = [
         ("B", "Baixa"),
         ("M", "Média"),
@@ -37,5 +41,9 @@ class Tasks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
 
+    class Meta:
+        verbose_name = "Tarefa"
+        verbose_name_plural = "Tarefas"
+        
     def __str__(self):
         return self.title

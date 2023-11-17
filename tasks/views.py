@@ -1,16 +1,18 @@
 from django.shortcuts import render, HttpResponse
-from .models import Tasks, Category
+from .models import Task, Category
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "tasks/home.html")
 
 
-@login_required
-def tasks_read(request):
-    tasks = Tasks.objects.filter(user=request.user)
-    categories = Category.objects.filter(user=request.user)
+def tasks_list(request):
+    tasks = Task.objects.all()
 
-    context = {"tasks": [tasks], "categories": [categories]}
-
-    return render(request, "tasks_read.html", context)
+    return render(
+        request, 
+        "tasks/tasks_list.html", 
+        {
+            "tasks": tasks
+        }
+    )

@@ -1,5 +1,31 @@
-<nav>
-    <ul>
-        <li><a href="">Home</a></li>
-    </ul>
-</nav>
+<header class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+    <a class="fs-3 navbar-text text-decoration-none" href="{% url "home" %}">Taskify</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url "home" %}">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{% url "tasks_list" %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Tarefas
+                </a>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about">Sobre</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about">Contato</a>
+            </li>
+        </ul>
+    </div>        
+    
+    <button type="button" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-secondary">Cadastrar</button>
+</header>

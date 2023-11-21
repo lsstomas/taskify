@@ -13,19 +13,24 @@
     --light2: #f2f2f2;
     --light3: #ededed;
     --dark1: #000;
-    --dark2: #1f1f1f;
+    --dark2: #444444;
     --c1: rgb(0, 98, 255);
     --c2: rgb(0, 145, 255);
 }
 
 body {
-    padding-top: 100px;
+    padding: 80px 0px;
     background-color: var(--light2);
     color: var(--dark1);
 }
 
+main {
+    padding: 40px;
+}
+
+/* HEADER */
 .navbar {
-    height: 100px;
-    padding: 20px 90px;
-    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.222);
+    min-height: 80px;
+    background-color: var(--light3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15)
 }

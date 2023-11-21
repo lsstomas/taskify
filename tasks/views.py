@@ -9,10 +9,8 @@ def home(request):
 def tasks_list(request):
     tasks = Task.objects.all()
 
-    return render(
-        request, 
-        "tasks/tasks_list.html", 
-        {
-            "tasks": tasks
-        }
-    )
+    return render(request, "tasks/tasks_list.html", {"tasks": tasks})
+
+
+def contact(request):
+    return render(request, "tasks/contact.html")

@@ -11,7 +11,7 @@ class Category(models.Model):
         verbose_name = "Categoria"
         verbose_name_plural = "Categorias"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -37,7 +37,7 @@ class Task(models.Model):
     priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default="M")
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True
-    )
+    )   
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
 

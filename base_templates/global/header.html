@@ -1,5 +1,4 @@
 {% load static %}
-
 <nav class="navbar navbar-expand-lg fixed-top">
 	<div class="container-fluid">
 		<a class="navbar-brand fs-2 ms-5" href="{% url "home" %}">Taskify</a>
@@ -30,8 +29,8 @@
 		</div>
 
 		<form class="justify-content-end me-3">
-			<a class="btn btn-primary" href="{% url "login" %}">Entrar</a>
-			<a class="btn btn-secondary" href="{% url "signup" %}">Cadastre-se</a>
+			<a class="btn btn-primary" href="{% url "home" %}">Entrar</a>
+			<a class="btn btn-secondary" href="{% url "home" %}">Cadastre-se</a>
 		</form>
 	</div>
 </nav>

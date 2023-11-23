@@ -1,0 +1,25 @@
+{% extends "global/base.html" %} 
+{% load static %} 
+
+{% block title %}Home{% endblock title %} 
+
+{% block head %}<link rel="stylesheet" href="{% static 'tasks/css/home.css' %}" />{%endblock head %} 
+
+{% block content %}
+
+<section class="home d-flex align-items-center h-75" id="home">
+	<div class="container">
+		<div class="row d-flex align-items center">
+			<div class="col-xl-4">
+				<h1 class="text-dark">Organize a sua vida</h1>
+				<p class="text-dark">
+					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione nobis sapiente earum corrupti vel enim quas fugit, molestiae aperiam. Quas ea dolore dicta dignissimos
+					atque, deleniti pariatur laboriosam possimus quam.
+				</p>
+                <button class="btn btn-success px-3">Começar</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends "global/base.html" %} 
+
+{% block title %}Editar Categoria{% endblock title %} 
+
+{% block content %}
+    <main>
+        <div class="container d-flex align-items-center justify-content-center flex-column">
+            <form action="{% url "edit_category" category.id %}" method="POST" class="mt-4 align-content-center justify-content-center card p-5 w-50">
+                {% csrf_token %}
+                <h1 class="h2 mb-5 text-center">Editar Categoria</h1>
+    
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome da Categoria</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ category.name }}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="color" class="form-label">Cor</label>
+                    <input type="color" class="form-control p-2" id="color" name="color" value="{{ category.color }}"/>
+                </div>
+
+                <button type="submit" class="btn btn-success p-2 mt-3">Salvar</button>
+
+                <a href="{% url "delete_category" category.id %}" class="btn btn-danger p-2 mt-3" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">Excluir</a>
+            </form>
+        </div>
+    </main>
+{% endblock content %}

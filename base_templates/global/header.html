@@ -1,36 +1,59 @@
-{% load static %}
-<nav class="navbar navbar-expand-lg fixed-top">
-	<div class="container-fluid">
-		<a class="navbar-brand fs-2 ms-5" href="{% url "home" %}">Taskify</a>
-
-		<button
-			class="navbar-toggler"
-			type="button"
-			data-bs-toggle="collapse"
-			data-bs-target="#navbarNav"
-			aria-controls="navbarNav"
-			aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse justify-content-center ms-5" id="navbarNav">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link fs-5" id="home" href="{% url "home" %}">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link fs-5" id="tasks" href="{% url "tasks_list" %}">Tarefas</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link fs-5" id="contact" href="{% url "contact" %}">Contato</a>
-				</li>
-			</ul>
+<header>
+	<nav class="navbar navbar-expand-lg fixed-top">
+		<div class="container-fluid px-5">
+			<a class="navbar-brand fs-2" href="{% url "home" %}">Taskify</a>
+	
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarNav"
+				aria-controls="navbarNav"
+				aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+	
+			<div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+				<ul class="navbar-nav gap-3">
+					<li class="nav-item">
+						<a class="nav-link fs-5" id="home" href="{% url "home" %}">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fs-5" id="tasks" href="{% url "info" %}">Geral</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link fs-5" id="contact" href="{% url "contact" %}">Contato</a>
+					</li>
+				</ul>
+			</div>
+	
+			{% if user.is_authenticated %}
+				<div class="justify-content-end">
+					<div class="dropstart">
+						<button class="d-flex align-items-center btn btn-primary py-2 gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<div class="user-name text-uppercase">
+								{{ user.username }}
+							</div>
+							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+								<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+							</svg>	
+						</button>
+						<ul class="dropdown-menu dropdown-menu-dark">
+							<li><a class="dropdown-item" href="{% url "list_tasks" %}">Tarefas</a></li>
+							<li><a class="dropdown-item" href="{% url "list_categories" %}">Categorias</a></li>
+							<li><a class="dropdown-item" href="{% url "settings" %}">Configurações</a></li>
+							<li><a class="dropdown-item" href="{% url "logout" %}">Sair</a></li>
+						</ul>
+					</div>
+				</div>
+			{% else %}
+				<form class="justify-content-end me-3">
+					<a class="btn btn-primary" href="{% url "login" %}">Entrar</a>
+					<a class="btn btn-secondary" href="{% url "register" %}">Cadastre-se</a>
+				</form>
+			{% endif %}
 		</div>
-
-		<form class="justify-content-end me-3">
-			<a class="btn btn-primary" href="{% url "home" %}">Entrar</a>
-			<a class="btn btn-secondary" href="{% url "home" %}">Cadastre-se</a>
-		</form>
-	</div>
-</nav>
+	</nav>
+</header>

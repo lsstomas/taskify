@@ -21,3 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
     activeUrl();
 })
 
+window.addEventListener('load', () => {
+    const messages = document.querySelectorAll('.alert');
+    messages.forEach(message => {
+        setTimeout(() => {
+            message.style.opacity = '0';
+        }, "3000");
+
+        message.addEventListener('transitionend', () => {
+            if (message.style.opacity <= "30") {
+                message.style.display = "none";
+            }
+        })
+    });
+});

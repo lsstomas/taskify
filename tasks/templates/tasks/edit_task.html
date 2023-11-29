@@ -1,0 +1,62 @@
+{% extends "global/base.html" %}
+{% load tz %} 
+
+{% block title %}Editar Tarefa{% endblock title %} 
+
+{% block content %}
+    <main>
+        <div class="container d-flex align-items-center justify-content-center flex-column">
+            <form action="{% url "edit_task" task.id %}" method="POST" class="mt-4 align-content-center justify-content-center card p-5 w-50">
+                {% csrf_token %}
+                <h1 class="h2 mb-4 text-center">Editar Tarefa</h1>
+    
+                <div class="mb-3">
+                    <label for="title" class="form-label">Título</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ task.title }}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="description" name="description" rows="3">{{ task.description }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="due_date" class="form-label">Prazo</label>
+                    <input type="datetime-local" class="form-control" id="due_date" name="due_date" value="{{ task.due_date|utc|date:'Y-m-d\TH:i' }}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Categoria</label>
+                    <select class="form-select" id="category" name="category" {% if not categories %} disabled {% endif %}>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}" {% if task.category.id == category.id %} selected {% endif %}>{{ category.name }}</option>
+                        {% empty %}
+                            <option>Nenhuma categoria disponível</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="priority" class="form-label">Prioridade</label>
+                    <select class="form-select" id="priority" name="priority">
+                        <option value="B" {% if task.priority == 'B' %} selected {% endif %}>Baixa</option>
+                        <option value="M" {% if task.priority == 'M' %} selected {% endif %}>Média</option>
+                        <option value="A" {% if task.priority == 'A' %} selected {% endif %}>Alta</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="N" {% if task.status == 'N' %} selected {% endif %}>Não Iniciado</option>
+                        <option value="P" {% if task.status == 'P' %} selected {% endif %}>Em Progresso</option>
+                        <option value="C" {% if task.status == 'C' %} selected {% endif %}>Concluído</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success p-2 mt-3">Salvar</button>
+                <a href="{% url "delete_task" task.id %}" class="btn btn-danger p-2 mt-3" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');">Excluir</a>
+            </form>
+        </div>
+    </main>
+{% endblock content %}

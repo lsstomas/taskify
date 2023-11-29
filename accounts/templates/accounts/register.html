@@ -1,0 +1,29 @@
+{% extends "global/base.html" %} 
+
+{% block title %}Cadastro{% endblock title %} 
+
+{% block content %}
+    <main>
+        <div class="container-fluid" style="width: 45%">
+            <form action="{% url "register" %}" method="POST" class="mt-4 align-content-center justify-content-center card p-5">
+                {% csrf_token %}
+                <h1 class="h2 mb-4 text-center">Crie sua conta</h1>
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuário</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Informe seu nome de usuário"/>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="nome@email.com"/>
+                </div>
+                <div class="mb-3">
+                    <label for="password1" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="password1" name="password1" placeholder="Digite sua senha"/>
+                    <input type="password" class="form-control mt-3" id="password2" name="password2" placeholder="Confirme sua senha"/>
+                </div>
+                <button type="submit" class="btn btn-primary p-2 mt-3">Entrar</button>
+            </form>
+        </div>
+    </main>
+{% endblock content %}

@@ -19,6 +19,11 @@
                     <input type="color" class="form-control p-2" id="color" name="color" value="{{ category.color }}"/>
                 </div>
 
+                <div class="mb-3">
+                    <label for="user" class="form-label">Usuário</label>
+                    <input disabled type="text" class="form-control text-uppercase" id="user" name="user" value="{{ user }}"/>
+                </div>
+
                 <button type="submit" class="btn btn-success p-2 mt-3">Salvar</button>
 
                 <a href="{% url "delete_category" category.id %}" class="btn btn-danger p-2 mt-3" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">Excluir</a>

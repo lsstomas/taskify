@@ -70,7 +70,7 @@
 
             {% if total_tasks != 0 %}
                 <div class="row d-flex justify-content-center align-items-center">
-                    <div class="chart-container mt-5" style="width: 30%">
+                    <div class="chart-container mt-5" style="width: 50%">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>
@@ -85,33 +85,34 @@
             data: {
                 labels: ['Tarefas Pendentes', 'Tarefas Concluídas'],
                 datasets: [{
-                    label: 'Tarefas', 
+                    label: 'Distribuição de Tarefas', 
                     data: [{{ pendent_tasks }}, {{ tasks_completed }}],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.2)', 
+                        'rgba(0, 255, 0, 0.2)'  
+                    ],
+                    borderColor: [
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(0, 255, 0, 1)'
+                    ],
+                    borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'top',
-                    },
                     title: {
-                        display: false,
-                    text: 'Estatíticas gerais'
-                    }
-                },    
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            display: false // Oculta os rótulos do eixo Y
+                        display: true,
+                        text: 'Estatísticas Gerais',
+                        padding: {
+                            bottom: 20
+                        },
+                        font: {
+                            size: 24
                         }
-                    }
+                    },   
                 }
-            }
+            },
         });
-
-        console.log([{{ total_tasks }}, {{ tasks_due_soon }}, {{ tasks_completed }}]);
-
     </script>
 {% endblock content %}

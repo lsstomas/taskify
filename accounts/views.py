@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+
 
 def register_view(request):
-    if request.method == "GET":
-        return render(request, "accounts/register.html")
-    else:
+    if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password1 = request.POST.get("password1")
@@ -27,7 +29,22 @@ def register_view(request):
         user.save()
 
         messages.success(request, "Usuário criado com sucesso!")
+
+        email_body = render_to_string(
+            "accounts/email_template.html", {"name": request.POST.get("username")}
+        )
+
+        send_mail(
+            "Confirmação de Cadastro!",
+            email_body,
+            settings.EMAIL_HOST_USER,
+            [email if email else "luisftomasprado@gmail.com"],
+            fail_silently=False,
+        )
+
         return redirect("login")
+
+    return render(request, "accounts/register.html")
 
 
 def login_view(request):
@@ -41,7 +58,7 @@ def login_view(request):
             login(request, user)
             messages.success(request, "Logado com sucesso!")
             return redirect("info")
-        else:   
+        else:
             messages.error(request, "Usuário ou senha inválidos!")
 
     return render(request, "accounts/login.html")

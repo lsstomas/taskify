@@ -27,7 +27,7 @@
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Categoria</label>
-                    <select class="form-select" id="category" name="category" {% if not categories %} disabled {% endif %}>
+                    <select class="form-select" id="task_category" name="task_category" {% if not categories %} disabled {% endif %}>
                         {% for category in categories %}
                             <option value="{{ category.name }}" {% if task.category.id == category.id %} selected {% endif %}>{{ category.name }}</option>
                         {% empty %}

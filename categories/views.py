@@ -34,7 +34,7 @@ def add_category(request):
     return render(
         request,
         "categories/add_category.html",
-        {"form": form},
+        {"form": form, "user": request.user},
     )
 
 
@@ -47,7 +47,10 @@ def edit_category(request, category_id):
         form = CategoryForm(data=request.POST, instance=category, user=request.user)
 
         if form.is_valid():
-            form.save()
+            category = form.save(commit=False)
+            
+            category.user = request.user
+            category.save()
             messages.success(request, "SUCESSO: A categoria foi editada com êxito.")
             return redirect("list_categories")
         else:
@@ -56,7 +59,7 @@ def edit_category(request, category_id):
     return render(
         request,
         "categories/edit_category.html",
-        {"form": form, "category": category},
+        {"form": form, "category": category, "user": request.user},
     )
 
 

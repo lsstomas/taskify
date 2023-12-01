@@ -11,7 +11,7 @@ from django.utils import timezone
 def info(request):
     tasks = Task.objects.filter(user=request.user)
     total_tasks = tasks.count()
-    pendent_tasks = tasks.filter(status=["N", "P"]).count()
+    pendent_tasks = tasks.filter(status="N").count() + tasks.filter(status="P").count()
     tasks_completed = tasks.filter(status="C").count()
 
     context = {
@@ -40,12 +40,19 @@ def add_task(request):
 
         if form.is_valid():
             task = form.save(commit=False)
+
             task.user = request.user
+            category_name = request.POST.get("task_category")
+            if category_name:
+                category = get_object_or_404(
+                    Category, name=category_name, user=request.user
+                )
+                task.category = category
+
             task.save()
             messages.success(request, "SUCESSO: Tarefa adicionada com êxito.")
             return redirect("list_tasks")
         else:
-            print(form.errors)
             messages.error(request, "ERRO: Ocorreu um erro ao adicionar a tarefa.")
 
     return render(
@@ -63,7 +70,16 @@ def edit_task(request, task_id):
         form = TaskForm(data=request.POST, instance=task, user=request.user)
 
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+
+            category_name = request.POST.get("task_category")
+            if category_name:
+                category = get_object_or_404(
+                    Category, name=category_name, user=request.user
+                )
+                task.category = category
+
+            task.save()
             messages.success(request, "SUCESSO: A tarefa foi editada com êxito.")
             return redirect("list_tasks")
         else:

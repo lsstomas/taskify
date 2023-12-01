@@ -18,7 +18,7 @@
 
 {% block content %}
     <main>
-        <div class="container">
+        <div class="container-fluid">
             {% if tasks %}
             <table class="table text-center table-bordered table-hover" style="width: 100%;" id="taskTable">
                 <thead class="table-dark">
@@ -43,7 +43,7 @@
                             <td>
                                 <a class="link-underline link-underline-opacity-0 link-dark fw-medium" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
                             </td>
-                            <td>{{ task.description }}</td>
+                            <td class="text-justify px-4">{{ task.description }}</td>
                             <td>{{ task.category.name }}</td>
                             <td>{{ task.get_priority_display }}</td>
                             <td>{{ task.formatted_due_date }}</td>

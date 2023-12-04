@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from website.forms import ContactForm
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 def home(request):
@@ -8,6 +13,30 @@ def home(request):
 
 
 def contact(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            send_mail(
+                request.POST.get("name"),
+                +" - "
+                + request.POST.get("subject")
+                + " - "
+                + request.POST.get("email"),
+                request.POST.get("message"),
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_HOST_USER, "luisftomasprado@gmail.com"],
+                fail_silently=False,
+            )
+
+            messages.success(request, "Mensagem enviada com sucesso!")
+            return render(request, "website/contact.html")
+        else:
+            messages.error(request, "ERRO: Ocorreu um erro ao enviar a mensagem.")
+            return render(request, "website/contact.html")
+
     return render(request, "website/contact.html")
 
 

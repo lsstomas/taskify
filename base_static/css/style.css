@@ -76,28 +76,6 @@ ul {
     border-collapse: collapse;
 }
 
-.bi-check-circle-fill {
-    color: green;
-    font-size: 1.3rem;
-}
-
-.bi-x-circle-fill {
-    color: red;
-    font-size: 1.3rem;
-}
-
-.bi-journals, 
-.bi-bookmark {
-    color: white;
-    font-size: 1.1rem;
-    margin-left: 3px;
-}
-
-.bi-plus-circle-fill {
-    color: rgb(0, 115, 255);
-    font-size: 1.3rem;
-}
-
 footer {
     background-color: #dbdbdb;
     color: rgb(78, 78, 78);

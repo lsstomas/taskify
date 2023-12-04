@@ -47,6 +47,7 @@ class Task(models.Model):
     notification_time = models.IntegerField(choices=NOTIFICATION_CHOICES, default=1440)
 
     def formatted_due_date(self):
+        self.due_date = self.due_date - timedelta(hours=3)
         return self.due_date.strftime("%d/%m/%y %Hh%M")
 
     class Meta:

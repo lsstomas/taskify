@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from website.forms import ContactForm
 
 from django.core.mail import send_mail
-from django.conf import settings
 from django.template.loader import render_to_string
+from django.conf import settings
 
 
 def home(request):
@@ -17,25 +17,28 @@ def contact(request):
         form = ContactForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            name = form.cleaned_data["name"]
+            subject = form.cleaned_data["subject"]
+            message = form.cleaned_data["message"]
+            sender = form.cleaned_data["email"]
 
-            send_mail(
-                request.POST.get("name"),
-                +" - "
-                + request.POST.get("subject")
-                + " - "
-                + request.POST.get("email"),
-                request.POST.get("message"),
-                settings.EMAIL_HOST_USER,
-                [settings.EMAIL_HOST_USER, "luisftomasprado@gmail.com"],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    subject + " - " + name + " - " + sender,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    ["luisftomasprado@gmail.com"],
+                    fail_silently=False,
+                )
+            except Exception:
+                messages.error(request, "ERRO: Ocorreu um erro ao enviar a mensagem.")
+                return redirect("contact")
 
             messages.success(request, "Mensagem enviada com sucesso!")
-            return render(request, "website/contact.html")
+            return redirect("contact")
         else:
             messages.error(request, "ERRO: Ocorreu um erro ao enviar a mensagem.")
-            return render(request, "website/contact.html")
+            return redirect("contact")
 
     return render(request, "website/contact.html")
 

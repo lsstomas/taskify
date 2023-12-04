@@ -136,10 +136,14 @@ def conclude_task(request, task_id):
 def change_reminder(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
-    if task.reminder_sent:
-        task.reminder_sent = False
+    if task.due_date >= timezone.now():
+        if task.reminder_sent:
+            task.reminder_sent = False
+        else:
+            task.reminder_sent = True
     else:
-        task.reminder_sent = True
+        messages.error(request, "ERRO: A tarefa possui prazo inválido.")
+        redirect("list_tasks")
 
     task.save()
     return redirect("list_tasks")

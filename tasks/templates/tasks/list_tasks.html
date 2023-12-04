@@ -42,37 +42,43 @@
                             <td class="text-justify px-4">{{ task.description }}</td>
                             <!-- <td class="color-cell" data-color="{{ task.category.color }}" style="background-color: {{ task.category.color }};"> -->
                             <td>
-                                <div class="d-flex align-items-center justify-content-center gap-4">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <a class="link-underline link-underline-opacity-0 fw-bold link-dark" href="{% url "edit_category" task.category.id %}">{{ task.category.name }}</a>
-                                    </div>
-                                    <div class="position-relative d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-tag fs-4 position-absolute z-1"></i>
-                                        <i class="bi bi-tag-fill fs-4 position-absolute" style="color: {{ task.category.color }};"></i>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="d-flex align-items-center justify-content-between" style="width: 80%;">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <a class="link-underline link-underline-opacity-0 fw-bold link-dark" href="{% url "edit_category" task.category.id %}">{{ task.category.name }}</a>
+                                        </div>
+                                        <div class="position-relative d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-tag fs-4 position-absolute z-1"></i>
+                                            <i class="bi bi-tag-fill fs-4 position-absolute" style="color: {{ task.category.color }};"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
                             <td>{{ task.get_priority_display }}</td>
                             <td>{{ task.formatted_due_date }}</td>
                             <td>
-                                <div class="d-flex align-items-center justify-content-center gap-4">
-                                    {{ task.get_status_display }}
-                                    {% if task.status == "N" %}
-                                    <div class="position-relative d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-caret-right-square fs-4 position-absolute z-1"></i>
-                                        <i class="bi bi-caret-right-square-fill fs-4 position-absolute text-light"></i>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="d-flex align-items-center justify-content-between" style="width: 80%;>
+                                        <div class="d-flex align-items-center justify-content-start">
+                                            {{ task.get_status_display }}
+                                        </div>
+                                        {% if task.status == "N" %}
+                                        <div class="position-relative d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-caret-right-square fs-4 position-absolute z-1"></i>
+                                            <i class="bi bi-caret-right-square-fill fs-4 position-absolute text-light"></i>
+                                        </div>
+                                        {% elif task.status == "P" %}
+                                        <div class="position-relative d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-clock fs-4 position-absolute z-1"></i>
+                                            <i class="bi bi-clock-fill fs-4 position-absolute text-warning"></i>
+                                        </div>
+                                        {% elif task.status == "C" %}
+                                        <div class="position-relative d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-check-circle fs-4 position-absolute z-1"></i>
+                                            <i class="bi bi-check-circle-fill fs-4 position-absolute text-primary"></i>
+                                        </div>
+                                        {% endif %}
                                     </div>
-                                    {% elif task.status == "P" %}
-                                    <div class="position-relative d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-clock fs-4 position-absolute z-1"></i>
-                                        <i class="bi bi-clock-fill fs-4 position-absolute text-warning"></i>
-                                    </div>
-                                    {% elif task.status == "C" %}
-                                    <div class="position-relative d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-check-circle fs-4 position-absolute z-1"></i>
-                                        <i class="bi bi-check-circle-fill fs-4 position-absolute text-primary"></i>
-                                    </div>
-                                    {% endif %}
                                 </div>
                             </td>
                             <td class="text-center actions">

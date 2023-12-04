@@ -140,3 +140,7 @@ main {
 .cardAnimado:hover {
     transform: translateY(-10px);
 }
+
+.concluido {
+    background-color: #31708f !important;
+}

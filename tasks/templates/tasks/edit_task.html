@@ -22,7 +22,21 @@
 
                 <div class="mb-3">
                     <label for="due_date" class="form-label">Prazo</label>
-                    <input type="datetime-local" class="form-control" id="due_date" name="due_date" value="{{ task.due_date|utc|date:'Y-m-d\TH:i' }}"/>
+                    <input type="datetime-local" class="form-control" id="due_date" name="due_date" value="{{ task.due_date|date:'Y-m-d\TH:i' }}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="notification_time" class="form-label">Lembrete</label>
+                    <select class="form-control" id="notification_time" name="notification_time"/>
+                        <option value="1" {% if task.notification_time == 1 %} selected {% endif %}>1 minuto antes</option>
+                        <option value="5" {% if task.notification_time == 5 %} selected {% endif %}>5 minutos antes</option>
+                        <option value="15" {% if task.notification_time == 15 %} selected {% endif %}>15 minutos antes</option>
+                        <option value="30" {% if task.notification_time == 30 %} selected {% endif %}>30 minutos antes</option>
+                        <option value="60" {% if task.notification_time == 60 %} selected {% endif %}>1 hora antes</option>
+                        <option value="180" {% if task.notification_time == 180 %} selected {% endif %}>3 horas antes</option>
+                        <option value="1440" {% if task.notification_time == 1440 %} selected {% endif %}>1 dia antes</option>
+                        <option value="10080" {% if task.notification_time == 10080 %} selected {% endif %}>1 semana antes</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">

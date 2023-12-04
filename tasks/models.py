@@ -1,10 +1,24 @@
 from django.db import models
+from django.forms import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
 from categories.models import Category
+from django.contrib import messages
+from datetime import timedelta
 
 
 class Task(models.Model):
+    NOTIFICATION_CHOICES = [
+        (1, "1 minuto"),
+        (5, "5 minutos"),
+        (15, "15 minutos"),
+        (30, "30 minutos"),
+        (60, "1 hora"),
+        (180, "3 horas"),
+        (1440, "1 dia"),
+        (10080, "1 semana"),
+    ]
+
     PRIORITY_CHOICES = [
         ("B", "Baixa"),
         ("M", "Média"),
@@ -29,6 +43,8 @@ class Task(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
+    reminder_sent = models.BooleanField(default=False)
+    notification_time = models.IntegerField(choices=NOTIFICATION_CHOICES, default=1440)
 
     def formatted_due_date(self):
         return self.due_date.strftime("%d/%m/%y %Hh%M")

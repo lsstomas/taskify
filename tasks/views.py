@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 @login_required(login_url="/accounts/login/")
 def info(request):
@@ -83,8 +86,8 @@ def edit_task(request, task_id):
             messages.success(request, "SUCESSO: A tarefa foi editada com êxito.")
             return redirect("list_tasks")
         else:
-            print(form.errors)
             messages.error(request, "ERRO: Ocorreu um erro ao editar a tarefa.")
+            print(form.errors)
 
     return render(
         request,
@@ -120,10 +123,23 @@ def conclude_task(request, task_id):
             return redirect("list_tasks")
 
         task.status = "C"
+        task.reminder_sent = True
         task.conclution_date = timezone.localtime(timezone.now())
         task.save()
         messages.success(request, "SUCESSO: A tarefa foi concluída com êxito.")
     else:
         messages.error(request, "ERRO: Ocorreu um erro ao concluir a tarefa.")
 
+    return redirect("list_tasks")
+
+
+def change_reminder(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if task.reminder_sent:
+        task.reminder_sent = False
+    else:
+        task.reminder_sent = True
+
+    task.save()
     return redirect("list_tasks")

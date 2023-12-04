@@ -35,13 +35,43 @@
 
                 <tbody style="vertical-align: middle; ">
                     {% for task in tasks %}
-                        <tr {% if task.category.color %}style="background-color:{{ task.category.color }};"{% endif %}>
+                        <tr class="">
                             <td class="p-4">
-                                <a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <div class="d-flex align-items-center justify-content-center gap-4">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            {% if task.status == "C" %}
+                                                <del><a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_task" task.id %}">{{ task.title }}</a></del>
+                                            {% else %}
+                                                <a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
+                                            {% endif %}
+                                        </div>
+                                        {% if task.status != "C" %}
+                                        <div class="position-relative d-flex align-items-center justify-content-center">
+                                            {% if task.reminder_sent == False %}
+                                                <a class="link-dark d-flex align-items-center justify-content-center" href="{% url "change_reminder" task.id %}">
+                                                    <i class="bi bi-bell fs-4 position-absolute z-1"></i>
+                                                    <i class="bi bi-bell-fill fs-4 position-absolute text-warning"></i>
+                                                </a>
+                                            {% else %}
+                                                <a class="link-dark d-flex align-items-center justify-content-center" href="{% url "change_reminder" task.id %}">
+                                                    <i class="bi bi-bell-slash fs-4 position-absolute z-1"></i>
+                                                    <i class="bi bi-bell-slash-fill fs-4 position-absolute text-secondary"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
                             </td>
                             <td class="text-justify px-4">
                                 {% if task.description %}
-                                    {{ task.description }}
+                                    {% if task.status == "C" %}
+                                        <del>{{ task.description }}</del>
+                                    {% else %}
+                                        {{ task.description }}
+                                    {% endif %}
                                 {% else %}
                                     <span class="opacity-25">Nenhuma descrição adicionada</span>
                                 {% endif %}
@@ -71,30 +101,39 @@
                                         </div>
                                         {% if task.status == "N" %}
                                         <div class="position-relative d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-caret-right-square fs-4 position-absolute z-1"></i>
-                                            <i class="bi bi-caret-right-square-fill fs-4 position-absolute text-light"></i>
+                                            <i class="bi bi-caret-right-square fs-5 position-absolute z-1"></i>
+                                            <i class="bi bi-caret-right-square-fill fs-5 position-absolute text-light"></i>
                                         </div>
                                         {% elif task.status == "P" %}
                                         <div class="position-relative d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-clock fs-4 position-absolute z-1"></i>
-                                            <i class="bi bi-clock-fill fs-4 position-absolute text-warning"></i>
+                                            <i class="bi bi-clock fs-5 position-absolute z-1"></i>
+                                            <i class="bi bi-clock-fill fs-5 position-absolute text-warning"></i>
                                         </div>
                                         {% elif task.status == "C" %}
                                         <div class="position-relative d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-check-circle fs-4 position-absolute z-1"></i>
-                                            <i class="bi bi-check-circle-fill fs-4 position-absolute text-primary"></i>
+                                            <i class="bi bi-check-circle fs-5 position-absolute z-1"></i>
+                                            <i class="bi bi-check-circle-fill fs-5 position-absolute text-primary"></i>
                                         </div>
                                         {% endif %}
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center actions">
-                                <form action="{% url "conclude_task" task.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <i class="bi bi-check-circle-fill" onclick="this.closest('form').submit();" style="cursor: pointer;"></i>
-                                </form>
-                            
-                                <a href="{% url "delete_task" task.id %}" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');"><i class="bi bi-x-circle-fill"></i></a>
+                            <td class="actions">
+                                <div class="position-relative d-flex align-items-center justify-content-center gap-4 flex-column">
+                                    {% if task.status != "C" %}
+                                    <form action="{% url "conclude_task" task.id %}" method="POST" class="d-flex align-items-center justify-content-center">
+                                        {% csrf_token %}
+                                        <i class="bi bi-check-circle text-dark position-absolute fs-5 z-1" onclick="this.closest('form').submit();" style="cursor: pointer;"></i>
+                                        <i class="bi bi-check-circle-fill text-success position-absolute fs-5" onclick="this.closest('form').submit();" style="cursor: pointer;"></i>
+                                    </form>
+                                    {% endif %}
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <a href="{% url "delete_task" task.id %}" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');" class="link-dark d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-x-circle position-absolute fs-5 z-1 text-dark"></i>
+                                            <i class="bi bi-x-circle-fill position-absolute fs-5  text-danger"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -155,7 +194,7 @@
                 },   
                 
                 "columnDefs": [
-                    { "width": "15%", "targets": 0 },
+                    { "width": "20%", "targets": 0 },
                     { "width": "35%", "targets": 1 },
                     { "width": "15%", "targets": 2 },
                     { "width": "5%", "targets": 3 },

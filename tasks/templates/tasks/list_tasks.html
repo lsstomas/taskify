@@ -39,26 +39,33 @@
                             <td class="p-4">
                                 <a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
                             </td>
-                            <td class="text-justify px-4">{{ task.description }}</td>
-                            <!-- <td class="color-cell" data-color="{{ task.category.color }}" style="background-color: {{ task.category.color }};"> -->
+                            <td class="text-justify px-4">
+                                {% if task.description %}
+                                    {{ task.description }}
+                                {% else %}
+                                    <span class="opacity-25">Nenhuma descrição adicionada</span>
+                                {% endif %}
+                            </td>
                             <td>
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <div class="d-flex align-items-center justify-content-between" style="width: 80%;">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <a class="link-underline link-underline-opacity-0 fw-bold link-dark" href="{% url "edit_category" task.category.id %}">{{ task.category.name }}</a>
-                                        </div>
-                                        <div class="position-relative d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-tag fs-4 position-absolute z-1"></i>
-                                            <i class="bi bi-tag-fill fs-4 position-absolute" style="color: {{ task.category.color }};"></i>
+                                {% if task.category %}
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div class="d-flex align-items-center justify-content-center gap-4">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <a class="link-underline link-underline-opacity-0 fw-bold link-dark" href="{% url "edit_category" task.category.id %}">{{ task.category.name }}</a>
+                                            </div>
+                                            <div class="position-relative d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-tag fs-4 position-absolute z-1"></i>
+                                                <i class="bi bi-tag-fill fs-4 position-absolute" style="color: {{ task.category.color }};"></i>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </td>
                             <td>{{ task.get_priority_display }}</td>
                             <td>{{ task.formatted_due_date }}</td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <div class="d-flex align-items-center justify-content-between" style="width: 80%;>
+                                    <div class="d-flex align-items-center justify-content-between gap-4">
                                         <div class="d-flex align-items-center justify-content-start">
                                             {{ task.get_status_display }}
                                         </div>

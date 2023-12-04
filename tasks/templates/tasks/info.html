@@ -16,23 +16,23 @@
 
             <div class="d-flex gap-3 align-items-center justify-content-center flex-column mb-5">
                 <div class="d-flex gap-3 align-items-center justify-content-center">
-                    <a href="{% url "list_tasks" %}" class="btn btn-primary p-3 mt-5">
+                    <a href="{% url "list_tasks" %}" class="btn btn-primary p-3 mt-5 tasks_shadow">
                         Visualizar tarefas
                         <i class="bi bi-journals"></i>
                     </a>
-                    <a href="{% url "list_categories" %}" class="btn btn-dark p-3 mt-5">
+                    <a href="{% url "list_categories" %}" class="btn btn-dark p-3 mt-5 categories_shadow">
                         Visualizar categorias
                         <i class="bi bi-bookmark"></i>
                     </a>
                 </div>
 
                 <div class="d-flex gap-3 align-items-center justify-content-center">
-                    <a href="{% url "add_task" %}" class="btn btn-primary p-3">
+                    <a href="{% url "add_task" %}" class="btn btn-primary p-3 tasks_shadow">
                         Adicionar uma nova tarefa
                         <i class="bi bi-plus-square"></i>
                     </a>
 
-                    <a href="{% url "add_category" %}" class="btn btn-dark p-3">
+                    <a href="{% url "add_category" %}" class="btn btn-dark p-3 categories_shadow">
                         Adicionar uma nova categoria
                         <i class="bi bi-plus-square"></i>
                     </a>
@@ -70,7 +70,7 @@
 
             {% if total_tasks != 0 %}
                 <div class="row d-flex justify-content-center align-items-center">
-                    <div class="chart-container mt-5" style="width: 50%">
+                    <div class="chart-container mt-5" style="width: 40%">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>
@@ -81,19 +81,15 @@
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'pie', 
+            type: 'doughnut', 
             data: {
                 labels: ['Tarefas Pendentes', 'Tarefas Concluídas'],
                 datasets: [{
                     label: 'Distribuição de Tarefas', 
                     data: [{{ pendent_tasks }}, {{ tasks_completed }}],
                     backgroundColor: [
-                        'rgba(255, 0, 0, 0.2)', 
-                        'rgba(0, 255, 0, 0.2)'  
-                    ],
-                    borderColor: [
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(0, 255, 0, 1)'
+                        'rgba(255, 0, 0, 1)', 
+                        'rgba(0, 255, 0, 1)'  
                     ],
                     borderWidth: 1
                 }]
@@ -101,8 +97,12 @@
             options: {
                 responsive: true,
                 plugins: {
-                    title: {
+                    legend: {
                         display: true,
+                        position: "top",
+                    },
+                    title: {
+                        display: false,
                         text: 'Estatísticas Gerais',
                         padding: {
                             bottom: 20

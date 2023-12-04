@@ -112,28 +112,6 @@ main {
     font-size: 1.3rem;
 }
 
-#taskTable th:nth-child(1) { width: 4%; }
-#taskTable th:nth-child(2) { width: 16%; }
-#taskTable th:nth-child(3) { width: 34%; }
-#taskTable th:nth-child(4) { width: 10%; }
-#taskTable th:nth-child(5) { width: 10%; }
-#taskTable th:nth-child(6) { width: 8%; }
-#taskTable th:nth-child(7) { width: 10%; }
-#taskTable th:nth-child(8) { width: 8%; }
-
-#taskTable tbody tr td {
-    padding: 20px 10px;
-}
-
-#categoryTable th:nth-child(1) { width: 10%; }
-#categoryTable th:nth-child(2) { width: 50%; }
-#categoryTable th:nth-child(3) { width: 30%; }
-#categoryTable th:nth-child(4) { width: 10%; }
-
-#categoryTable tbody tr td {
-    padding: 20px 10px;
-}
-
 .box-shadow-red {
     -webkit-box-shadow: 0px 0px 15px 5px rgba(255,0,0,0.25);
     -moz-box-shadow: 0px 0px 15px 5px rgba(255,0,0,0.25);

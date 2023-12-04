@@ -20,10 +20,9 @@
     <main>
         <div class="container">
             {% if categories %}
-            <table class="table text-center table-bordered table-hover" style="width: 100%;" id="categoryTable">
+            <table class="table table-secondary text-center cell-border w-100 fw-medium" id="categoryTable" box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;>
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Nome da Categoria</th>
                         <th scope="col">Cor</th>
                         <th scope="col">Ações</th>
@@ -33,15 +32,16 @@
                 <tbody style="vertical-align: middle;">
                     {% for category in categories %}
                         <tr>
-                            <th scope="row">
-                                <a class="link-underline link-underline-opacity-0 link-dark fw-bold" href="{% url "edit_category" category.id %}">{{ forloop.counter }}</a>
-                            </th>
                             <td>
-                                <a class="link-underline link-underline-opacity-0 link-dark fw-medium" href="{% url "edit_category" category.id %}">{{ category.name }}</a>
+                                <a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_category" category.id %}">{{ category.name }}</a>
                             </td>
-                            <td>{{ category.color }}</td>
-                            <td>
-                                <a href="{% url "delete_category" category.id %}" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');"><i class="bi bi-x-circle-fill"></i></a>
+                            <td class="color-cell text-uppercase" data-color="{{ category.color }}" style="background-color: {{ category.color }};">
+                                {{ category.color }}
+                            </td>
+                            <td class="text-center">
+                                <a href="{% url "delete_category" category.id %}" onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -55,19 +55,57 @@
 
     <script>
         $(document).ready( function () {
+            document.querySelectorAll('.color-cell').forEach(function(cell) {
+                var hexColor = cell.getAttribute('data-color');
+
+                if (isLightColor(hexColor)) {
+                    cell.style.color = 'black';
+                } else {
+                    cell.style.color = 'white';
+                }
+            });
+        
+            function isLightColor(hex) {
+                var r = parseInt(hex.substr(1, 2), 16);
+                var g = parseInt(hex.substr(3, 2), 16);
+                var b = parseInt(hex.substr(5, 2), 16);
+    
+                var lum = (r * 299 + g * 587 + b * 114) / 1000;
+    
+                return lum > 128;
+            }
+
             var table = $('#categoryTable');
 
             table.DataTable({
-                    searching: false,
-                    paging: false,
-                    select: true,
-                    ordering: true,
-                    scrollY: 300,
-                    language: {
-                        "lengthMenu": "Mostrando _MENU_ registros por página",
-                        "info": "Mostrando página _PAGE_ de _PAGES_",
-                        ""
+                searching: false,
+                paging: false,
+                select: true,
+                ordering: true,
+                language: {
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    zeroRecords: "Nada encontrado",
+                    info: "",
+                    infoEmpty: "",
+                    infoFiltered: "",
+                    search: "Buscar:",
+                    paginate: {
+                        first: "Primeiro",
+                        last: "Último",
+                        next: "Próximo",
+                        previous: "Anterior"
+                    },
+                    aria: {
+                        sortAscending:  ": ativar para ordenar a coluna em ordem crescente",
+                        sortDescending: ": ativar para ordenar a coluna em ordem decrescente"
                     }
+                },
+
+                "columnDefs": [
+                    { "width": "30%", "targets": 0 },
+                    { "width": "60%", "targets": 1 },
+                    { "width": "10%", "targets": 2 },
+                ]    
             })
         })
     </script>

@@ -20,10 +20,9 @@
     <main>
         <div class="container-fluid">
             {% if tasks %}
-            <table class="table text-center table-bordered table-hover" style="width: 100%;" id="taskTable">
+            <table class="table table-secondary cell-border w-100 text-center fw-medium" id="taskTable" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Título</th>
                         <th scope="col">Descrição</th>
                         <th scope="col">Categoria</th>
@@ -34,21 +33,49 @@
                     </tr>
                 </thead>
 
-                <tbody style="vertical-align: middle;">
+                <tbody style="vertical-align: middle; ">
                     {% for task in tasks %}
-                        <tr>
-                            <th scope="row">
-                                <a class="link-underline link-underline-opacity-0 link-dark fw-bold" href="{% url "edit_task" task.id %}">{{ forloop.counter }}</a>
-                            </th>
-                            <td>
-                                <a class="link-underline link-underline-opacity-0 link-dark fw-medium" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
+                        <tr {% if task.category.color %}style="background-color:{{ task.category.color }};"{% endif %}>
+                            <td class="p-4">
+                                <a class="link-dark link-underline link-underline-opacity-0 fw-bold" href="{% url "edit_task" task.id %}">{{ task.title }}</a>
                             </td>
                             <td class="text-justify px-4">{{ task.description }}</td>
-                            <td>{{ task.category.name }}</td>
+                            <!-- <td class="color-cell" data-color="{{ task.category.color }}" style="background-color: {{ task.category.color }};"> -->
+                            <td>
+                                <div class="d-flex align-items-center justify-content-center gap-4">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <a class="link-underline link-underline-opacity-0 fw-bold link-dark" href="{% url "edit_category" task.category.id %}">{{ task.category.name }}</a>
+                                    </div>
+                                    <div class="position-relative d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-tag fs-4 position-absolute z-1"></i>
+                                        <i class="bi bi-tag-fill fs-4 position-absolute" style="color: {{ task.category.color }};"></i>
+                                    </div>
+                                </div>
+                            </td>
                             <td>{{ task.get_priority_display }}</td>
                             <td>{{ task.formatted_due_date }}</td>
-                            <td>{{ task.get_status_display }}</td>
                             <td>
+                                <div class="d-flex align-items-center justify-content-center gap-4">
+                                    {{ task.get_status_display }}
+                                    {% if task.status == "N" %}
+                                    <div class="position-relative d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-caret-right-square fs-4 position-absolute z-1"></i>
+                                        <i class="bi bi-caret-right-square-fill fs-4 position-absolute text-light"></i>
+                                    </div>
+                                    {% elif task.status == "P" %}
+                                    <div class="position-relative d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-clock fs-4 position-absolute z-1"></i>
+                                        <i class="bi bi-clock-fill fs-4 position-absolute text-warning"></i>
+                                    </div>
+                                    {% elif task.status == "C" %}
+                                    <div class="position-relative d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-check-circle fs-4 position-absolute z-1"></i>
+                                        <i class="bi bi-check-circle-fill fs-4 position-absolute text-primary"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="text-center actions">
                                 <form action="{% url "conclude_task" task.id %}" method="POST">
                                     {% csrf_token %}
                                     <i class="bi bi-check-circle-fill" onclick="this.closest('form').submit();" style="cursor: pointer;"></i>
@@ -68,21 +95,62 @@
 
     <script>
         $(document).ready( function () {
-            
+            document.querySelectorAll('.color-cell').forEach(function(cell) {
+                var hexColor = cell.getAttribute('data-color');
+    
+                if (isLightColor(hexColor)) {
+                    cell.style.color = 'black';
+                } else {
+                    cell.style.color = 'white';
+                }
+            });
+        
+            function isLightColor(hex) {
+                var r = parseInt(hex.substr(1, 2), 16);
+                var g = parseInt(hex.substr(3, 2), 16);
+                var b = parseInt(hex.substr(5, 2), 16);
+    
+                var lum = (r * 299 + g * 587 + b * 114) / 1000;
+    
+                return lum > 128;
+            }
+
             var table = $('#taskTable');
 
             table.DataTable({
-                    searching: false,
-                    paging: false,
-                    select: true,
-                    ordering: true,
-                    scrollY: 430,
-                    language: {
-                        "lengthMenu": "Mostrando _MENU_ registros por página",
-                        "info": "Mostrando página _PAGE_ de _PAGES_",
-                        ""
+                searching: false,
+                paging: false,
+                select: true,
+                ordering: true,
+                language: {
+                    lengthMenu: "",
+                    zeroRecords: "",
+                    info: "",
+                    infoEmpty: "",
+                    infoFiltered: "",
+                    search: "",
+                    paginate: {
+                        first: "Primeiro",
+                        last: "Último",
+                        next: "Próximo",
+                        previous: "Anterior"
+                    },
+                    aria: {
+                        sortAscending:  ": ativar para ordenar a coluna em ordem crescente",
+                        sortDescending: ": ativar para ordenar a coluna em ordem decrescente"
                     }
-            });
+                },   
+                
+                "columnDefs": [
+                    { "width": "15%", "targets": 0 },
+                    { "width": "35%", "targets": 1 },
+                    { "width": "15%", "targets": 2 },
+                    { "width": "5%", "targets": 3 },
+                    { "width": "10%", "targets": 4 },
+                    { "width": "15%", "targets": 5 },
+                    { "width": "5%", "targets": 6 },
+                ]   
+            })
         })
     </script>
 {% endblock content %}

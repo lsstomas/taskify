@@ -31,7 +31,7 @@ class Task(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
 
     def formatted_due_date(self):
-        return self.due_date.strftime("%d/%m/%y %H:%M:%S")
+        return self.due_date.strftime("%d/%m/%y %Hh%M")
 
     class Meta:
         verbose_name = "Tarefa"

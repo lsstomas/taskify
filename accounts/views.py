@@ -68,3 +68,31 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Deslogado com sucesso!")
     return redirect("login")
+
+
+def password_reset(request):
+    if request.method == "POST":
+        password = request.POST.get("password")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+        user = request.user
+
+        if user.check_password(password):
+            if password1 == password:
+                messages.error(request, "A nova senha deve ser diferente da atual!")
+                return render(request, "accounts/password_reset.html")
+
+            if password1 == password2:
+                user.set_password(password1)
+                user.save()
+                messages.success(request, "Senha alterada com sucesso!")
+                logout(request)
+                return redirect("login")
+            else:
+                messages.error(request, "A nova senha não confere! Digite novamente...")
+                return redirect("password_reset")
+        else:
+            messages.error(request, "Senha atual inválida!")
+            return redirect("password_reset")
+
+    return render(request, "accounts/password_reset.html")
